@@ -4,6 +4,7 @@ import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.Email;
 import org.apache.commons.mail.EmailException;
 
+import br.com.caelum.vraptor.environment.Environment;
 import br.com.caelum.vraptor.ioc.ApplicationScoped;
 import br.com.caelum.vraptor.ioc.Component;
 
@@ -34,8 +35,8 @@ public class DefaultMailer implements Mailer {
 			email.setFrom(env.get(FROM));
 		}
 		email.setHostName(env.get(SERVER));
-		email.setPort(Integer.parseInt(env.get(PORT)));
-		boolean tls = Boolean.parseBoolean(env.supports(TLS));
+		email.setSmtpPort(Integer.parseInt(env.get(PORT)));
+		boolean tls = env.supports(TLS);
 		email.setTLS(tls);
 		if (tls) {
 			email.setAuthenticator(new DefaultAuthenticator(env.get(USERNAME),
@@ -44,7 +45,7 @@ public class DefaultMailer implements Mailer {
 		wrapUpAndSend(email);
 	}
 	
-	protected void wrapUpAndSend(Email email) {
+	protected void wrapUpAndSend(Email email) throws EmailException {
 		email.send();
 	}
 
