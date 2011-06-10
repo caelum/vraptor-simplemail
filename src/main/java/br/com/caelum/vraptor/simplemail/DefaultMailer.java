@@ -3,7 +3,8 @@ package br.com.caelum.vraptor.simplemail;
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.Email;
 import org.apache.commons.mail.EmailException;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import br.com.caelum.vraptor.environment.Environment;
 import br.com.caelum.vraptor.ioc.ApplicationScoped;
@@ -20,7 +21,7 @@ public class DefaultMailer implements Mailer {
 
 	private final Environment env;
 
-	private static final Logger LOGGER = Logger.getLogger(DefaultMailer.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(DefaultMailer.class);
 	private static final String EMAIL_LOG_TEMPLATE = "Sending message \"%s\" from %s to %s using server %s:%s (using TLS: %b)";
 
 	private static final String FROM = "vraptor.simplemail.main.from";
@@ -50,7 +51,7 @@ public class DefaultMailer implements Mailer {
 	}
 
 	protected void wrapUpAndSend(Email email) throws EmailException {
-		LOGGER.debug(String.format(EMAIL_LOG_TEMPLATE,
+		LOGGER.debug(String.format(emailLogTemplate(),
 				email.getSubject(),
 				email.getFromAddress(),
 				email.getToAddresses(),
@@ -58,6 +59,10 @@ public class DefaultMailer implements Mailer {
 				email.getSmtpPort(),
 				email.isTLS()));
 		email.send();
+	}
+
+	protected String emailLogTemplate() {
+		return EMAIL_LOG_TEMPLATE;
 	}
 
 }
