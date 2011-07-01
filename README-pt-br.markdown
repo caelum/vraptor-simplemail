@@ -26,7 +26,7 @@ No seu controlador:
 		private final User user;
 		private final Mailer mailer;
 
-		public DashboardController(User user, Mailer mailer) {
+		public PasswordResetterController(User user, Mailer mailer) {
 			this.user = user;
 			this.mailer = mailer;
 		}
