@@ -1,44 +1,57 @@
-## vraptor-freemarker
+## vraptor-simplemail
 
-Uma biblioteca simples para renderizar templates freemarker de dentro de arquivos jar, email, etc.
+Envie e-mails sem se preocupar com as configurações do servidor SMTP
 
 # instalação
 
-É possível fazer o download do Vraptor-freemarker.jar do repositório do Maven, ou configurado em qualquer ferramenta compatível:
+Vraptor-simplemail.jar pode ser baixado dos repositórios do Maven, ou configurado em qualquer ferramenta
+compatível:
 
 		<dependency>
 			<groupId>br.com.caelum.vraptor</groupId>
-			<artifactId>vraptor-freemarker</artifactId>
-			<version>1.0.0</version>
+			<artifactId>vraptor-simplemail</artifactId>
+			<version>1.0.1</version>
 			<scope>compile</scope>
 		</dependency>
 
 
-# Renderizando páginas
+# uso
+
+No seu controlador:
 
 @Resource
-public class DashboardController {
+public class PasswordResetterController {
 
-	private final Usuario usuario;
-	private final Freemarker freemarker;
+	private final User user;
+	private final Mailer mailer;
 
-	public DashboardController(Usuario usuario, Freemarker freemarker) {
-		this.usuario = usuario;
-		this.freemarker = freemarker;
+	public DashboardController(User user, Mailer mailer) {
+		this.user = user;
+		this.mailer = mailer;
 	}
-	
-	@Path("/admin/dashboard")
-	@Get
-	public void lista() throws IOException, TemplateException {
-		freemarker.use("dashboard").with("usuarioLogado", usuario).render();
+
+	@Path("/password/send")
+	@Post
+	public void sendNewPassword() {
+		Email email = new SimpleMail();
+		email.setSubject("Your new password");
+		email.addTo(user.getEmail());
+		email.setMsg(user.generateNewPassword());
+		mailer.send(email); // As configurações restantes são feitas pelo Mailer
 	}
-	
+
 }
 
-# Renderizando emails
+Vraptor-simplemail usa o vraptor-environment para gerenciar diferentes configurações de servidores
+SMTP (para o ambiente de desenvolvimento, de produção, etc.). Então, nos seus arquivos .properties
+específicos para cada ambiente (development.properties, production.properties, etc.), coloque as
+configurações do seu servidor de envio de e-mail:
 
-String body = freemarker.use("notificacao_email_enviado").with("usuarioLogado", usuario).getContent();
+vraptor.simplemail.main.server = localhost
+vraptor.simplemail.main.port = 25
+vraptor.simplemail.main.tls = false
+vraptor.simplemail.main.from = no-reply@myapp.com
 
-# Ajuda
+# ajuda
 
-Receba assistência dos desenvolvedores do vraptor e da comunidade na lista de emails do vraptor.
+Para maiores informações, consulte a lista de e-mails da comunidade VRaptor.
