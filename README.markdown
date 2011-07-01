@@ -1,43 +1,54 @@
-## vraptor-freemarker
+## vraptor-simplemail
 
-A simple freemarker engine for rendering templates from within jar files, or rendering email etc.
+Send e-mails without worrying about the SMTP server settings.
 
 # installing
 
-Vraptor-freemarker.jar can be downloaded from mavens repository, or configured in any compatible tool:
+Vraptor-simplemail.jar can be downloaded from mavens repository, or configured in any compatible tool:
 
 		<dependency>
 			<groupId>br.com.caelum.vraptor</groupId>
-			<artifactId>vraptor-freemarker</artifactId>
-			<version>1.0.0</version>
+			<artifactId>vraptor-simplemail</artifactId>
+			<version>1.0.1</version>
 			<scope>compile</scope>
 		</dependency>
 
 
-# usage for rendering pages
+# usage
+
+In your controller:
 
 @Resource
-public class DashboardController {
+public class PasswordResetterController {
 
 	private final User user;
-	private final Freemarker freemarker;
+	private final Mailer mailer;
 
-	public DashboardController(User user, Freemarker freemarker) {
+	public DashboardController(User user, Mailer mailer) {
 		this.user = user;
-		this.freemarker = freemarker;
+		this.mailer = mailer;
 	}
-	
-	@Path("/admin/dashboard")
-	@Get
-	public void list() throws IOException, TemplateException {
-		freemarker.use("dashboard").with("currentUser", user).render();
+
+	@Path("/password/send")
+	@Post
+	public void sendNewPassword() {
+		Email email = new SimpleMail();
+		email.setSubject("Your new password");
+		email.addTo(user.getEmail());
+		email.setMsg(user.generateNewPassword());
+		mailer.send(email); // Hostname, port and security settings are made by the Mailer
 	}
-	
+
 }
 
-# usage for rendering emails
+Vraptor-simplemail uses vraptor-environment to manage different mail server configurations
+(for development, production, etc.). So, in your put_your_environment_here.properties, you
+put the SMTP server configurations:
 
-String body = freemarker.use("send_mail_notification").with("currentUser", user).getContent();
+vraptor.simplemail.main.server = localhost
+vraptor.simplemail.main.port = 25
+vraptor.simplemail.main.tls = false
+vraptor.simplemail.main.from = no-reply@myapp.com
 
 # help
 
