@@ -30,6 +30,7 @@ public class DefaultMailer implements Mailer {
 	private static final String TLS = "vraptor.simplemail.main.tls";
 	private static final String USERNAME = "vraptor.simplemail.main.username";
 	private static final String PASSWORD = "vraptor.simplemail.main.password";
+	private static final String REPLY_TO = "vraptor.simplemail.main.replyTo";
 
 	public DefaultMailer(Environment env) {
 		this.env = env;
@@ -46,6 +47,10 @@ public class DefaultMailer implements Mailer {
 		if (tls) {
 			email.setAuthenticator(new DefaultAuthenticator(env.get(USERNAME),
 					env.get(PASSWORD)));
+		}
+		String replyTo = env.get(REPLY_TO);
+		if(replyTo != null) {
+			email.addReplyTo(replyTo);
 		}
 		wrapUpAndSend(email);
 	}
