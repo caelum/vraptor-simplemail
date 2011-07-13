@@ -48,8 +48,8 @@ public class DefaultMailer implements Mailer {
 			email.setAuthenticator(new DefaultAuthenticator(env.get(USERNAME),
 					env.get(PASSWORD)));
 		}
-		String replyTo = env.get(REPLY_TO);
-		if(replyTo != null) {
+		if(env.has(REPLY_TO)) {
+			String replyTo = env.get(REPLY_TO);
 			email.addReplyTo(replyTo);
 		}
 		wrapUpAndSend(email);
