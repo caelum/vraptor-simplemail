@@ -50,6 +50,10 @@ Vraptor-simplemail uses vraptor-environment to manage different mail server conf
 	vraptor.simplemail.main.port = 25
 	vraptor.simplemail.main.tls = false
 	vraptor.simplemail.main.from = no-reply@myapp.com
+	
+When appropriate, configure on your environment properties file the SMTP server replyTo 
+property as follows:
+	vraptor.simplemail.main.replyTo = support@myapp.com
 
 # help
 
