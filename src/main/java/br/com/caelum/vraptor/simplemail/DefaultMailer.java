@@ -11,7 +11,7 @@ import br.com.caelum.vraptor.ioc.ApplicationScoped;
 import br.com.caelum.vraptor.ioc.Component;
 
 /**
- * A simple implementaion of a mailer.
+ * A simple implementation of a mailer.
  *
  * @author guilherme silveira
  */
