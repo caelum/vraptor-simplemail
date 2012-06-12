@@ -7,6 +7,7 @@ import java.util.concurrent.Future;
 import org.apache.commons.mail.Email;
 import org.apache.commons.mail.EmailException;
 
+import br.com.caelum.vraptor.ioc.ApplicationScoped;
 import br.com.caelum.vraptor.ioc.Component;
 import br.com.caelum.vraptor.ioc.ComponentFactory;
 
@@ -19,6 +20,7 @@ import br.com.caelum.vraptor.ioc.ComponentFactory;
  * @author victorkendy
  */
 @Component
+@ApplicationScoped
 public class DefaultAsyncMailer implements AsyncMailer {
 
 	private final ExecutorService executor;

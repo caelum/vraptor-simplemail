@@ -8,14 +8,12 @@ import org.slf4j.LoggerFactory;
 
 import br.com.caelum.vraptor.environment.Environment;
 import br.com.caelum.vraptor.ioc.ApplicationScoped;
-import br.com.caelum.vraptor.ioc.Component;
 
 /**
  * A simple implementation of a mailer.
  *
  * @author guilherme silveira
  */
-@Component
 @ApplicationScoped
 public class DefaultMailer implements Mailer {
 
