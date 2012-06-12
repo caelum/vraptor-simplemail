@@ -33,12 +33,13 @@ public class DefaultAsyncMailer implements AsyncMailer {
 
 	@Override
 	public Future<Void> asyncSend(final Email email) {
-		return this.executor.submit(new Callable<Void>() {
+		Callable<Void> task = new Callable<Void>() {
 			@Override
 			public Void call() throws EmailException {
 				DefaultAsyncMailer.this.mailer.send(email);
 				return null;
 			}
-		});
+		};
+		return this.executor.submit(task);
 	}
 }

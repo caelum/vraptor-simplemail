@@ -16,9 +16,11 @@ public class DefaultTemplateMail implements TemplateMail {
 	private final AsyncMailer mailer;
 	private final String templateName;
 	private final Object[] nameParameters;
+	private final String appLocation;
 
-	public DefaultTemplateMail(String templateName, Freemarker freemarker, Localization localization, AsyncMailer mailer, Object... nameParameters) throws IOException {
+	public DefaultTemplateMail(String templateName, Freemarker freemarker, Localization localization, AsyncMailer mailer, String appLocation, Object... nameParameters) throws IOException {
 		this.templateName = templateName;
+		this.appLocation = appLocation;
 		this.nameParameters = nameParameters;
 		this.template = freemarker.use(templateName + ".ftl");
 		this.localization = localization;
@@ -33,8 +35,9 @@ public class DefaultTemplateMail implements TemplateMail {
 
 	@Override
 	public void dispatchTo(String name, String toMail) {
-		with("to.name", name);
-		with("to.email", toMail);
+		with("to_name", name);
+		with("to_email", toMail);
+		with("host", appLocation);
 		with("signer", this.localization.getMessage("signer"));
 		SimpleEmail email = new SimpleEmail();
 		try {
