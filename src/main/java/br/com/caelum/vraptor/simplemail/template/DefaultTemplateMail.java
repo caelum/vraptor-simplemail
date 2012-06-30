@@ -2,7 +2,7 @@ package br.com.caelum.vraptor.simplemail.template;
 
 import java.io.IOException;
 
-import org.apache.commons.mail.SimpleEmail;
+import org.apache.commons.mail.HtmlEmail;
 
 import br.com.caelum.vraptor.core.Localization;
 import br.com.caelum.vraptor.freemarker.Freemarker;
@@ -39,7 +39,7 @@ public class DefaultTemplateMail implements TemplateMail {
 		with("to_email", toMail);
 		with("host", appLocation);
 		with("signer", this.localization.getMessage("signer"));
-		SimpleEmail email = new SimpleEmail();
+		HtmlEmail email = new HtmlEmail();
 		try {
 			email.addTo(toMail, name);
 			email.setSubject(this.localization.getMessage(this.templateName, nameParameters));
