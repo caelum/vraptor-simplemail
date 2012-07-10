@@ -43,7 +43,7 @@ public class DefaultTemplateMail implements TemplateMail {
 		try {
 			email.addTo(toMail, name);
 			email.setSubject(this.localization.getMessage(this.templateName, nameParameters));
-			email.setMsg(this.template.getContent());
+			email.setHtmlMsg(this.template.getContent());
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
