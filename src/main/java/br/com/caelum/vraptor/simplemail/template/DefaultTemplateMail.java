@@ -22,7 +22,7 @@ public class DefaultTemplateMail implements TemplateMail {
 		this.templateName = templateName;
 		this.appLocation = appLocation;
 		this.nameParameters = nameParameters;
-		this.template = freemarker.use(templateName + ".ftl");
+		this.template = freemarker.use(templateName);
 		this.localization = localization;
 		this.mailer = mailer;
 	}
