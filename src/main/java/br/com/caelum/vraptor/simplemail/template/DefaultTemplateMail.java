@@ -18,6 +18,8 @@ public class DefaultTemplateMail implements TemplateMail {
 	private final Object[] nameParameters;
 	private final String appLocation;
 
+	private boolean hasSigner;
+
 	public DefaultTemplateMail(String templateName, Freemarker freemarker, Localization localization, AsyncMailer mailer, String appLocation, Object... nameParameters) throws IOException {
 		this.templateName = templateName;
 		this.appLocation = appLocation;
@@ -29,6 +31,7 @@ public class DefaultTemplateMail implements TemplateMail {
 
 	@Override
 	public TemplateMail with(String key, Object value) {
+		if (key.equals("signer")) this.hasSigner = true;
 		this.template.with(key, value);
 		return this;
 	}
@@ -38,7 +41,8 @@ public class DefaultTemplateMail implements TemplateMail {
 		with("to_name", name);
 		with("to_email", toMail);
 		with("host", appLocation);
-		with("signer", this.localization.getMessage("signer"));
+		if (!hasSigner) with("signer", this.localization.getMessage("signer"));
+
 		HtmlEmail email = new HtmlEmail();
 		try {
 			email.addTo(toMail, name);
