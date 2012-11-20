@@ -71,7 +71,7 @@ public class DefaultAsyncMailer implements AsyncMailer {
 	@Override
 	public Map<Email, Future<Void>> deliverPostponedMails() {
 		Map<Email, Future<Void>> deliveries = new HashMap<Email, Future<Void>>();
-		LOGGER.debug("Delivering all {} postponed emails", deliveries.size());
+		LOGGER.debug("Delivering all {} postponed emails", this.mailQueue.size());
 		while (!this.mailQueue.isEmpty()) {
 			Email nextMail = this.mailQueue.poll();
 			Future<Void> sendingResult = this.asyncSend(nextMail);
