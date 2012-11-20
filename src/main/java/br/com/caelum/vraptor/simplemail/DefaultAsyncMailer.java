@@ -44,6 +44,7 @@ public class DefaultAsyncMailer implements AsyncMailer {
 
 	@Override
 	public Future<Void> asyncSend(final Email email) {
+		LOGGER.debug("New email to be sent asynchronously: {} to {}", email.getSubject(), email.getToAddresses());
 		Callable<Void> task = new Callable<Void>() {
 			@Override
 			public Void call() throws EmailException {
@@ -57,7 +58,7 @@ public class DefaultAsyncMailer implements AsyncMailer {
 
 	@Override
 	public void sendLater(Email email) {
-		this.mailQueue.offer(email);
+		this.mailQueue.add(email);
 	}
 
 	@Override
