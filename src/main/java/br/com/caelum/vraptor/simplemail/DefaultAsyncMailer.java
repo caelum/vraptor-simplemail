@@ -1,5 +1,11 @@
 package br.com.caelum.vraptor.simplemail;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -25,6 +31,7 @@ public class DefaultAsyncMailer implements AsyncMailer {
 
 	private final ExecutorService executor;
 	private final Mailer mailer;
+	private final Queue<Email> mailQueue = new LinkedList<Email>();
 
 	public DefaultAsyncMailer(ExecutorService executor, Mailer mailer) {
 		this.executor = executor;
@@ -41,5 +48,28 @@ public class DefaultAsyncMailer implements AsyncMailer {
 			}
 		};
 		return this.executor.submit(task);
+	}
+
+	@Override
+	public void sendLater(Email email) {
+		this.mailQueue.offer(email);
+	}
+
+	@Override
+	public List<Email> clearPostponedMails() {
+		List<Email> undeliveredMails = new ArrayList<Email>(this.mailQueue);
+		this.mailQueue.clear();
+		return undeliveredMails;
+	}
+
+	@Override
+	public Map<Email, Future<Void>> deliverPostponedMails() {
+		Map<Email, Future<Void>> deliveries = new HashMap<Email, Future<Void>>();
+		while (!this.mailQueue.isEmpty()) {
+			Email nextMail = this.mailQueue.poll();
+			Future<Void> sendingResult = this.asyncSend(nextMail);
+			deliveries.put(nextMail, sendingResult);
+		}
+		return deliveries;
 	}
 }
