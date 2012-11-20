@@ -29,5 +29,5 @@ public interface TemplateMail {
 	 * @return An e-mail ready to be sent using a {@link Mailer} or an
 	 *         {@link AsyncMailer}
 	 */
-	public Email dispatchTo(String name, String toMail);
+	public Email to(String name, String toMail);
 }

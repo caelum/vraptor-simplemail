@@ -37,7 +37,7 @@ public class DefaultTemplateMail implements TemplateMail {
 	}
 
 	@Override
-	public Email dispatchTo(String name, String toMail) {
+	public Email to(String name, String toMail) {
 		return prepareEmail(name, toMail);
 	}
 

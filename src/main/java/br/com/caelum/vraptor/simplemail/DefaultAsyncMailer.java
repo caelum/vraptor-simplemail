@@ -12,6 +12,8 @@ import java.util.concurrent.Future;
 
 import org.apache.commons.mail.Email;
 import org.apache.commons.mail.EmailException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import br.com.caelum.vraptor.ioc.ApplicationScoped;
 import br.com.caelum.vraptor.ioc.Component;
@@ -29,6 +31,8 @@ import br.com.caelum.vraptor.ioc.ComponentFactory;
 @ApplicationScoped
 public class DefaultAsyncMailer implements AsyncMailer {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(DefaultAsyncMailer.class);
+
 	private final ExecutorService executor;
 	private final Mailer mailer;
 	private final Queue<Email> mailQueue = new LinkedList<Email>();
@@ -43,6 +47,7 @@ public class DefaultAsyncMailer implements AsyncMailer {
 		Callable<Void> task = new Callable<Void>() {
 			@Override
 			public Void call() throws EmailException {
+				LOGGER.debug("Asynchronously sending email {} to {}", email.getSubject(), email.getToAddresses());
 				DefaultAsyncMailer.this.mailer.send(email);
 				return null;
 			}
