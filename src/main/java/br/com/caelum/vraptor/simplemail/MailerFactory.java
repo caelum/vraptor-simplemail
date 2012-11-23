@@ -1,5 +1,7 @@
 package br.com.caelum.vraptor.simplemail;
 
+import java.lang.reflect.InvocationTargetException;
+
 import br.com.caelum.vraptor.environment.Environment;
 import br.com.caelum.vraptor.ioc.ApplicationScoped;
 import br.com.caelum.vraptor.ioc.Component;
@@ -23,12 +25,25 @@ public class MailerFactory implements ComponentFactory<Mailer> {
 			return new MockMailer();
 		}
 		try {
-			Class<?> implementation = getImplementationName();
-			return (Mailer) implementation.getConstructor(Environment.class)
-					.newInstance(env);
+			return instantiateWithEnv();
 		} catch (Exception e) {
-			throw new RuntimeException("Unable to start mailer", e);
+			try {
+				return instantiate();
+			} catch (Exception e2) {
+				throw new RuntimeException("Unable to start mailer", e);
+			}
 		}
+	}
+
+	private Mailer instantiateWithEnv() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException {
+		Class<?> implementation = getImplementationName();
+		return (Mailer) implementation.getConstructor(Environment.class)
+				.newInstance(env);
+	}
+
+	private Mailer instantiate() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException {
+		Class<?> implementation = getImplementationName();
+		return (Mailer) implementation.newInstance();
 	}
 
 	private Class<?> getImplementationName() throws ClassNotFoundException {
