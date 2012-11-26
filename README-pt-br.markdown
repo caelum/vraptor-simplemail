@@ -5,17 +5,18 @@ ou com bloquear o processamento enquanto envia um e-mail.
 
 # instalação
 
-O vraptor-simplemail.jar pode ser baixado dos repositórios do Maven, ou configurado em qualquer ferramenta
-compatível:
+O vraptor-simplemail.jar pode ser baixado dos repositórios do Maven, ou
+configurado em qualquer ferramenta compatível:
 
-		<dependency>
-			<groupId>br.com.caelum.vraptor</groupId>
-			<artifactId>vraptor-simplemail</artifactId>
-			<version>1.1.0</version>
-			<scope>compile</scope>
-		</dependency>
+	<dependency>
+		<groupId>br.com.caelum.vraptor</groupId>
+		<artifactId>vraptor-simplemail</artifactId>
+		<version>1.2.0</version>
+		<scope>compile</scope>
+	</dependency>
 
-O vraptor-simplemail depende da biblioteca Commons Email, da Apache (http://commons.apache.org/email/).
+O vraptor-simplemail depende da biblioteca Commons Email, da Apache
+(http://commons.apache.org/email/).
 
 # uso
 
@@ -65,7 +66,7 @@ bloquear o processamento enquanto o e-mail é enviado:
 			email.setSubject("Your new password");
 			email.addTo(user.getEmail());
 			email.setMsg(user.generateNewPassword());
-			mailer.asyncSend(email); // Hostname, port and security settings are made by the Mailer
+			mailer.asyncSend(email); // As configurações restantes são feitas pelo Mailer
 		}
 
 	}
@@ -97,6 +98,56 @@ factory:
 		}
 	}
 
+Você também pode enviar e-mails num ambiente parecido com uma transação: envie
+quantos e-mails você quiser dentro do seu controller e, se uma exceção ocorrer,
+cancele esses e-mails. Para fazer isso, use o método `sendLater` do
+`TemplateMailer`. O interceptor `AsyncMailerFlushInterceptor` é responsável por
+enviar de fato ou cancelar os e-mails se necessários.
+
+# templates
+
+O vraptor-simplemail integra muito bem com o Freemarker. Você pode usar
+templates do Freemarker para seus e-mails, assim você não precisa escrever o
+corpo inteiro do e-mail dentro de uma classe Java.
+
+Para usar o simplemail com o Freemarker, você também vai precisar do
+vraptor-freemarker. Coloque seus templates dentro de um diretório chamado
+`templates` e, para usá-los, peça por um `TemplateMailer` no construtor do seu
+controlador.
+
+	@Resource
+	public class PasswordResetterController {
+
+		private final User user;
+		private final AsyncMailer mailer;
+		private final TemplateMailer templates;
+
+		public PasswordResetterController(User user, AsyncMailer mailer, TemplateMailer templates) {
+			this.user = user;
+			this.mailer = mailer;
+			this.templates = templates;
+		}
+
+		// métodos do controlador
+	}
+
+Então, para criar e enviar um e-mail, especifique qual template você quer usar,
+preencha as variáveis necessárias e, finalmente, especifique o destinatário da
+mensagem. Neste último passo, você vai receber uma instância de `Email` pronta
+para envio.
+
+	@Path("/password/send")
+	@Post
+	public void sendNewPassword() {
+		Email email = this.templates
+				.template("forgotMail.ftl")
+				.with("user", this.user)
+				.with("password", this.user.generateNewPassword())
+				.to(this.user.getName(), this.user.getEmail());
+		mailer.asyncSend(email); // As configurações restantes são feitas pelo Mailer
+	}
+
+# ambientes
 
 O vraptor-simplemail usa o vraptor-environment para gerenciar diferentes configurações de servidores
 SMTP (para o ambiente de desenvolvimento, de produção, etc.). Então, nos seus arquivos .properties
