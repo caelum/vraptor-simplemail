@@ -15,9 +15,9 @@ import org.apache.commons.mail.EmailException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import br.com.caelum.vraptor.ioc.ApplicationScoped;
 import br.com.caelum.vraptor.ioc.Component;
 import br.com.caelum.vraptor.ioc.ComponentFactory;
+import br.com.caelum.vraptor.ioc.RequestScoped;
 
 /**
  * A simple implementation of an asynchronous mailer. It relies upon an instance
@@ -28,7 +28,7 @@ import br.com.caelum.vraptor.ioc.ComponentFactory;
  * @author victorkendy
  */
 @Component
-@ApplicationScoped
+@RequestScoped
 public class DefaultAsyncMailer implements AsyncMailer {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DefaultAsyncMailer.class);
