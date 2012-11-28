@@ -7,12 +7,12 @@ processing of a request while the e-mail is sent.
 
 Vraptor-simplemail.jar can be downloaded from mavens repository, or configured in any compatible tool:
 
-		<dependency>
-			<groupId>br.com.caelum.vraptor</groupId>
-			<artifactId>vraptor-simplemail</artifactId>
-			<version>1.1.0</version>
-			<scope>compile</scope>
-		</dependency>
+	<dependency>
+		<groupId>br.com.caelum.vraptor</groupId>
+		<artifactId>vraptor-simplemail</artifactId>
+		<version>1.2.1</version>
+		<scope>compile</scope>
+	</dependency>
 
 Vraptor-simplemail depends upon Apache's Commons Email library (http://commons.apache.org/email/).
 
@@ -94,6 +94,55 @@ pool of a fixed size, you need to create this factory:
 			this.pool.shutdown();
 		}
 	}
+
+You can also send e-mails in a transaction-like fashion: send as many e-mails
+as you want inside your controller and, if an exception occurs, cancel all
+those e-mails. To do so, use the method `sendLater` from the `TemplateMailer`.
+The interceptor `AsyncMailerFlushInterceptor` is responsible for sending or
+cancelling the e-mails if needed.
+
+# templating
+
+VRaptor-simplemail integrates pretty well with Freemarker. You can use
+Freemarker templates for your e-mails, so that you don't need to write the
+whole e-mail inside a Java class.
+
+To use simplemail with Freemarker, you will also need vraptor-freemarker. Put
+your templates inside a folder called `templates` and, to use them, ask for a
+`TemplateMailer` in your controller's constructor.
+
+	@Resource
+	public class PasswordResetterController {
+
+		private final User user;
+		private final AsyncMailer mailer;
+		private final TemplateMailer templates;
+
+		public PasswordResetterController(User user, AsyncMailer mailer, TemplateMailer templates) {
+			this.user = user;
+			this.mailer = mailer;
+			this.templates = templates;
+		}
+
+		// controller's methods
+	}
+
+Then, to create and send an e-mail, specify which template you want to use,
+bind the necessary variables and, finally, specify the addressee. In this last
+step, you will receive an instance of `Email` ready to be sent.
+
+	@Path("/password/send")
+	@Post
+	public void sendNewPassword() {
+		Email email = this.templates
+				.template("forgotMail.ftl")
+				.with("user", this.user)
+				.with("password", this.user.generateNewPassword())
+				.to(this.user.getName(), this.user.getEmail());
+		mailer.asyncSend(email); // Hostname, port and security settings are made by the Mailer
+	}
+
+# environments
 
 Vraptor-simplemail uses vraptor-environment to manage different mail server configurations
 (for development, production, etc.). So, in your different environment configuration files
