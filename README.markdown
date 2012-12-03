@@ -1,4 +1,5 @@
 ## vraptor-simplemail
+![Build status](https://secure.travis-ci.org/caelum/vraptor-simplemail.png)
 
 Send e-mails without worrying about the SMTP server settings or blocking the
 processing of a request while the e-mail is sent.
