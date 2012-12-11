@@ -12,7 +12,7 @@ import br.com.caelum.vraptor.simplemail.aws.MockMailer;
 @ApplicationScoped
 public class MailerFactory implements ComponentFactory<Mailer> {
 
-	private static final String MAILER_IMPLEMENTATION = "mailer.implementation";
+	public static final String MAILER_IMPLEMENTATION = "mailer.implementation";
 	private final Environment env;
 
 	public MailerFactory(Environment env) {
@@ -47,8 +47,9 @@ public class MailerFactory implements ComponentFactory<Mailer> {
 	}
 
 	private Class<?> getImplementationName() throws ClassNotFoundException {
-		if (!env.has(MAILER_IMPLEMENTATION))
+		if (!env.has(MAILER_IMPLEMENTATION)) {
 			return DefaultMailer.class;
+		}
 		return Class.forName(env.get(MAILER_IMPLEMENTATION));
 	}
 
