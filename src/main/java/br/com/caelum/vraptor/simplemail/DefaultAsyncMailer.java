@@ -79,4 +79,9 @@ public class DefaultAsyncMailer implements AsyncMailer {
 		}
 		return deliveries;
 	}
+
+	@Override
+	public boolean hasMailToDeliver() {
+		return !this.mailQueue.isEmpty();
+	}
 }

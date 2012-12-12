@@ -55,4 +55,10 @@ public interface AsyncMailer {
 	 * @return The list of e-mails that were not sent
 	 */
 	List<Email> clearPostponedMails();
+
+	/**
+	 * @return true if there are e-mails to be delivered later by a call to
+	 *         {@link #deliverPostponedMails()}
+	 */
+	boolean hasMailToDeliver();
 }

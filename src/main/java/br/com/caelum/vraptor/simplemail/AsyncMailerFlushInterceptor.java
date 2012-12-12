@@ -33,9 +33,10 @@ public class AsyncMailerFlushInterceptor implements Interceptor {
 		try {
 			stack.next(method, controller);
 			mailer.deliverPostponedMails();
-		} catch (Exception e) {
-			LOGGER.error("The following emails were not delivered because of an exception: {}", mailer.clearPostponedMails());
-			throw new InterceptionException(e);
+		} finally {
+			if (mailer.hasMailToDeliver()) {
+				LOGGER.error("The following emails were not delivered because of an exception: {}", mailer.clearPostponedMails());
+			}
 		}
 	}
 }
