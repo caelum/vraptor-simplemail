@@ -23,7 +23,6 @@ import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClient;
 import com.amazonaws.services.simpleemail.model.RawMessage;
 import com.amazonaws.services.simpleemail.model.SendRawEmailRequest;
 
-@ApplicationScoped
 public class AmazonSESMailer implements Mailer {
 	private final Environment env;
 	private final Session session;

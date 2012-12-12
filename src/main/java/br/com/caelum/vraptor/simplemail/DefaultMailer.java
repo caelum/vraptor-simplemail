@@ -14,7 +14,6 @@ import br.com.caelum.vraptor.ioc.ApplicationScoped;
  *
  * @author guilherme silveira
  */
-@ApplicationScoped
 public class DefaultMailer implements Mailer {
 
 	private final Environment env;
