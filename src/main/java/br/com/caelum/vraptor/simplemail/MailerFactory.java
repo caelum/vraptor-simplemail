@@ -2,6 +2,9 @@ package br.com.caelum.vraptor.simplemail;
 
 import java.lang.reflect.InvocationTargetException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import br.com.caelum.vraptor.environment.Environment;
 import br.com.caelum.vraptor.ioc.ApplicationScoped;
 import br.com.caelum.vraptor.ioc.Component;
@@ -13,6 +16,7 @@ import br.com.caelum.vraptor.simplemail.aws.MockMailer;
 public class MailerFactory implements ComponentFactory<Mailer> {
 
 	public static final String MAILER_IMPLEMENTATION = "mailer.implementation";
+	private static final Logger LOGGER = LoggerFactory.getLogger(MailerFactory.class);
 	private final Environment env;
 
 	public MailerFactory(Environment env) {
@@ -21,6 +25,12 @@ public class MailerFactory implements ComponentFactory<Mailer> {
 
 	@Override
 	public Mailer getInstance() {
+		Mailer instance = grabInstance();
+		LOGGER.info("using mailer named " + instance.getClass().getName() + "@" + env.getName());
+		return instance;
+	}
+
+	private Mailer grabInstance() {
 		if (env.getName().equals("development")) {
 			return new MockMailer();
 		}
