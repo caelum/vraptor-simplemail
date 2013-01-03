@@ -1,5 +1,8 @@
 package br.com.caelum.vraptor.simplemail.testing;
 
+import java.io.File;
+import java.net.URL;
+
 import org.apache.commons.mail.Email;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.SimpleEmail;
@@ -22,6 +25,26 @@ public class MockTemplateMail implements TemplateMail {
 			throw new IllegalArgumentException(e);
 		}
 		return email;
+	}
+
+	@Override
+	public TemplateMail embed(String name, File file) {
+		return this;
+	}
+
+	@Override
+	public TemplateMail embed(String name, URL url) {
+		return this;
+	}
+
+	@Override
+	public TemplateMail attach(String name, File file) {
+		return this;
+	}
+
+	@Override
+	public TemplateMail attach(String name, URL url) {
+		return this;
 	}
 
 }
