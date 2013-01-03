@@ -1,5 +1,8 @@
 package br.com.caelum.vraptor.simplemail.template;
 
+import java.io.File;
+import java.net.URL;
+
 import org.apache.commons.mail.Email;
 
 import br.com.caelum.vraptor.simplemail.AsyncMailer;
@@ -18,6 +21,24 @@ public interface TemplateMail {
 	 * @return The same TemplateMail object
 	 */
 	TemplateMail with(String key, Object value);
+	
+	/**
+	 * Fills a key with a value for embed a file in the mail body
+	 * 
+	 * @param name The name of a template variable to be replaced
+	 * @param file The file to be embed 
+	 * @return The same TemplateMail object
+	 */
+	TemplateMail embed(String name, File file);
+	
+	/**
+	 * Fills a key with a value for embed a content in the mail body
+	 * 
+	 * @param name The name of a template variable to be replaced
+	 * @param url The url to the content to be embed 
+	 * @return The same TemplateMail object
+	 */
+	TemplateMail embed(String name, URL url);
 
 	/**
 	 * Assembles the e-mail to the given recipient
