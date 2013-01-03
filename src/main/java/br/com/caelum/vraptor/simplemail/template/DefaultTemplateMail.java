@@ -21,6 +21,7 @@ import br.com.caelum.vraptor.freemarker.Template;
 public class DefaultTemplateMail implements TemplateMail {
 	
 	private final HashMap<String, DataSource> toEmbed = new HashMap<String, DataSource>();
+	private final HashMap<String, DataSource> toAttach = new HashMap<String, DataSource>();
 
 	private final Template template;
 	private final Localization localization;
@@ -64,6 +65,7 @@ public class DefaultTemplateMail implements TemplateMail {
 		try {
 			
 			addEmbeddables(email);
+			addAttachments(email);
 			
 			email.addTo(toMail, name);
 			email.setSubject(this.localization.getMessage(this.templateName, nameParameters));
@@ -82,6 +84,12 @@ public class DefaultTemplateMail implements TemplateMail {
 		}
 	}
 	
+	protected void addAttachments(HtmlEmail email) throws EmailException {
+		for(Entry<String,DataSource> entry : toAttach.entrySet()){
+			email.attach(entry.getValue(),entry.getKey(),"");
+		}
+	}
+	
 	@Override
 	public TemplateMail embed(String name, File file) {
 		toEmbed.put(name, new FileDataSource(file));
@@ -91,6 +99,12 @@ public class DefaultTemplateMail implements TemplateMail {
 	@Override
 	public TemplateMail embed(String name, URL url) {
 		toEmbed.put(name, new URLDataSource(url));
+		return this;
+	}
+	
+	@Override
+	public TemplateMail attach(String name, File file) {
+		toAttach.put(name, new FileDataSource(file));
 		return this;
 	}
 

@@ -37,4 +37,9 @@ public class MockTemplateMail implements TemplateMail {
 		return this;
 	}
 
+	@Override
+	public TemplateMail attach(String name, File file) {
+		return this;
+	}
+
 }

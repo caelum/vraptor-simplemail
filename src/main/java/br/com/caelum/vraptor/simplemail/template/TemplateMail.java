@@ -39,6 +39,15 @@ public interface TemplateMail {
 	 * @return The same TemplateMail object
 	 */
 	TemplateMail embed(String name, URL url);
+	
+	/**
+	 * Attach a file to the email
+	 * 
+	 * @param name The name of the file
+	 * @param file The file to be attached 
+	 * @return The same TemplateMail object
+	 */
+	TemplateMail attach(String name, File file);
 
 	/**
 	 * Assembles the e-mail to the given recipient
