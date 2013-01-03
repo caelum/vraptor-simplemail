@@ -107,5 +107,11 @@ public class DefaultTemplateMail implements TemplateMail {
 		toAttach.put(name, new FileDataSource(file));
 		return this;
 	}
+	
+	@Override
+	public TemplateMail attach(String name, URL url) {
+		toAttach.put(name, new URLDataSource(url));
+		return this;
+	}
 
 }
