@@ -26,7 +26,7 @@ public class MailerFactory implements ComponentFactory<Mailer> {
 	@Override
 	public Mailer getInstance() {
 		Mailer instance = grabInstance();
-		LOGGER.info("using mailer named " + instance.getClass().getName() + "@" + env.getName());
+		LOGGER.debug("using mailer named " + instance.getClass().getName() + "@" + env.getName());
 		return instance;
 	}
 
