@@ -158,6 +158,12 @@ When appropriate, configure on your environment properties file the SMTP server 
 property as follows:
 	vraptor.simplemail.main.replyTo = support@myapp.com
 
+Under development environment, vraptor-simplemail will use MockMailer to fake the sending of emails. This 
+implementation will simply log the emails with sl4j.
+
+Under any other environment, vraptor-simplemail will use DefaultMailer or the class specified 
+through `MAILER_IMPLEMENTATION` property at your vraptor-environment properties file.
+
 # help
 
 Get help from vraptor developers and the community at vraptor mailing list.
