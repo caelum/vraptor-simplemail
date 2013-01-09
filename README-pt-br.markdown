@@ -163,6 +163,12 @@ Caso seja conveniente, configure ainda no arquivo de propriedades de cada ambien
 do servidor de envio de e-mail:
 	vraptor.simplemail.main.replyTo = support@myapp.com
 
+No ambiente 'development', o vraptor-simplemail usará o MockMailer para simular o envio dos emails. Essa
+implementação simplesmente loga o envio dos emails com o sl4j.
+
+Em qualquer outro ambiente, o vraptor-simplemail usará o DefaultMailer ou a classe que pode
+ser especificada com a propriedade `mailer.implementation` do arquivo .properties do vraptor-environment.
+
 
 # ajuda
 
