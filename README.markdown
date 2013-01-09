@@ -162,7 +162,7 @@ Under development environment, vraptor-simplemail will use MockMailer to fake th
 implementation will simply log the emails with sl4j.
 
 Under any other environment, vraptor-simplemail will use DefaultMailer or the class specified 
-through `MAILER_IMPLEMENTATION` property at your vraptor-environment properties file.
+through `mailer.implementation` property at your vraptor-environment properties file.
 
 # help
 
