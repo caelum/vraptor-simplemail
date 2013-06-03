@@ -15,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import br.com.caelum.vraptor.environment.Environment;
-import br.com.caelum.vraptor.ioc.ApplicationScoped;
 import br.com.caelum.vraptor.simplemail.Mailer;
 
 import com.amazonaws.auth.PropertiesCredentials;
@@ -45,6 +44,7 @@ public class AmazonSESMailer implements Mailer {
 			.getLogger(AmazonSESMailer.class);
 	private final static String FROM = "vraptor.simplemail.main.from";
 	private final static String REPLY_TO = "vraptor.simplemail.main.replyTo";
+	private final static String SEND_REAL_EMAIL = "vraptor.simplemail.send_real_email";
 
 	RawMessage mail2Content(Email email) throws IOException,
 			MessagingException, EmailException {
@@ -55,7 +55,8 @@ public class AmazonSESMailer implements Mailer {
 	}
 
 	public void send(Email email) throws EmailException{
-		if (env.getName().equals("production")) {
+		boolean sendForReal = env.has(SEND_REAL_EMAIL) || env.getName().equals("production");
+		if (sendForReal) {
 			logger.info("REAL MAIL ::: {} ::: {}", email.getSubject(),
 					email.getToAddresses());
 
