@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import br.com.caelum.vraptor.environment.Environment;
-import br.com.caelum.vraptor.ioc.ApplicationScoped;
 
 /**
  * A simple implementation of a mailer.
@@ -22,6 +21,7 @@ public class DefaultMailer implements Mailer {
 	private static final String EMAIL_LOG_TEMPLATE = "Sending message \"%s\" from %s to %s using server %s:%s (using TLS: %b)";
 
 	private static final String FROM = "vraptor.simplemail.main.from";
+	private static final String FROM_NAME = "vraptor.simplemail.main.from.name";
 	private static final String SERVER = "vraptor.simplemail.main.server";
 	private static final String PORT = "vraptor.simplemail.main.port";
 	private static final String TLS = "vraptor.simplemail.main.tls";
@@ -35,7 +35,7 @@ public class DefaultMailer implements Mailer {
 
 	public void send(Email email) throws EmailException{
 		if (email.getFromAddress() == null) {
-			email.setFrom(env.get(FROM));
+			email.setFrom(env.get(FROM), env.get(FROM_NAME));
 		}
 		email.setHostName(env.get(SERVER));
 		email.setSmtpPort(Integer.parseInt(env.get(PORT)));
