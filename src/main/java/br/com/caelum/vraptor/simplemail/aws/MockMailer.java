@@ -1,5 +1,7 @@
 package br.com.caelum.vraptor.simplemail.aws;
 
+import javax.enterprise.inject.Vetoed;
+
 import net.vidageek.mirror.dsl.Mirror;
 
 import org.apache.commons.mail.Email;
@@ -10,6 +12,7 @@ import org.slf4j.Logger;
 
 import br.com.caelum.vraptor.simplemail.Mailer;
 
+@Vetoed
 public class MockMailer implements Mailer {
 	private final static Logger logger = org.slf4j.LoggerFactory.getLogger(MockMailer.class);
 

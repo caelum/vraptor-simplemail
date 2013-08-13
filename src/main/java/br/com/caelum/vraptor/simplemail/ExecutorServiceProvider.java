@@ -5,14 +5,12 @@ import java.util.concurrent.Executors;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.enterprise.inject.Produces;
 
-import br.com.caelum.vraptor.ioc.ApplicationScoped;
-import br.com.caelum.vraptor.ioc.Component;
-import br.com.caelum.vraptor.ioc.ComponentFactory;
+import br.com.caelum.vraptor4.ioc.ApplicationScoped;
 
-@Component
 @ApplicationScoped
-public class ExecutorServiceProvider implements ComponentFactory<ExecutorService> {
+public class ExecutorServiceProvider{
 
 	private ExecutorService pool;
 
@@ -21,7 +19,7 @@ public class ExecutorServiceProvider implements ComponentFactory<ExecutorService
 		this.pool = Executors.newCachedThreadPool();
 	}
 
-	@Override
+	@Produces
 	public ExecutorService getInstance() {
 		return this.pool;
 	}

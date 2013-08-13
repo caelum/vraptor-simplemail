@@ -10,14 +10,14 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
+import javax.inject.Inject;
+
 import org.apache.commons.mail.Email;
 import org.apache.commons.mail.EmailException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import br.com.caelum.vraptor.ioc.Component;
-import br.com.caelum.vraptor.ioc.ComponentFactory;
-import br.com.caelum.vraptor.ioc.RequestScoped;
+import br.com.caelum.vraptor4.ioc.RequestScoped;
 
 /**
  * A simple implementation of an asynchronous mailer. It relies upon an instance
@@ -27,16 +27,19 @@ import br.com.caelum.vraptor.ioc.RequestScoped;
  * @author luiz
  * @author victorkendy
  */
-@Component
 @RequestScoped
 public class DefaultAsyncMailer implements AsyncMailer {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DefaultAsyncMailer.class);
 
-	private final ExecutorService executor;
-	private final Mailer mailer;
-	private final Queue<Email> mailQueue = new LinkedList<Email>();
+	private ExecutorService executor;
+	private Mailer mailer;
+	private Queue<Email> mailQueue = new LinkedList<Email>();
 
+	@Deprecated //CDI eyes only
+	public DefaultAsyncMailer() {}
+	
+	@Inject
 	public DefaultAsyncMailer(ExecutorService executor, Mailer mailer) {
 		this.executor = executor;
 		this.mailer = mailer;
