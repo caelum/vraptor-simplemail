@@ -14,9 +14,9 @@ import org.apache.commons.mail.Email;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
 
-import br.com.caelum.vraptor.core.Localization;
 import br.com.caelum.vraptor.freemarker.Freemarker;
 import br.com.caelum.vraptor.freemarker.Template;
+import br.com.caelum.vraptor4.core.Localization;
 
 public class DefaultTemplateMail implements TemplateMail {
 	
