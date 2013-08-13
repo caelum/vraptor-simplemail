@@ -62,6 +62,8 @@ public class DefaultTemplateMail implements TemplateMail {
 		}
 
 		HtmlEmail email = new HtmlEmail();
+		email.setCharset("utf-8");
+		
 		try {
 			
 			addEmbeddables(email);
