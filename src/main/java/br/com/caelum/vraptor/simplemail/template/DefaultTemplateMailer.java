@@ -2,20 +2,23 @@ package br.com.caelum.vraptor.simplemail.template;
 
 import java.io.IOException;
 
+import javax.inject.Inject;
 import javax.servlet.ServletContext;
 
-import br.com.caelum.vraptor.core.Localization;
 import br.com.caelum.vraptor.environment.Environment;
 import br.com.caelum.vraptor.freemarker.Freemarker;
-import br.com.caelum.vraptor.ioc.Component;
+import br.com.caelum.vraptor4.core.Localization;
 
-@Component
 public class DefaultTemplateMailer implements TemplateMailer {
 
-	private final Freemarker freemarker;
-	private final Localization localization;
-	private final String appPath;
-
+	private Freemarker freemarker;
+	private Localization localization;
+	private String appPath;
+	
+	@Deprecated //CDI eyes only
+	public DefaultTemplateMailer() {}
+	
+	@Inject
 	public DefaultTemplateMailer(Localization localization, Freemarker freemarker, ServletContext context, Environment env) {
 		this.localization = localization;
 		this.freemarker = freemarker;
