@@ -3,12 +3,15 @@ package br.com.caelum.vraptor.simplemail.testing;
 import java.io.File;
 import java.net.URL;
 
+import javax.enterprise.inject.Vetoed;
+
 import org.apache.commons.mail.Email;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.SimpleEmail;
 
 import br.com.caelum.vraptor.simplemail.template.TemplateMail;
 
+@Vetoed
 public class MockTemplateMail implements TemplateMail {
 
 	@Override
