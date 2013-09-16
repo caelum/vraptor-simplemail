@@ -14,8 +14,8 @@ import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import br.com.caelum.vraptor4.InterceptionException;
-import br.com.caelum.vraptor4.interceptor.SimpleInterceptorStack;
+import br.com.caelum.vraptor.InterceptionException;
+import br.com.caelum.vraptor.interceptor.SimpleInterceptorStack;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AsyncMailerFlushInterceptorTest {

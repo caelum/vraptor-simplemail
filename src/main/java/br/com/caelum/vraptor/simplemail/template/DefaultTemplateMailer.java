@@ -5,9 +5,9 @@ import java.io.IOException;
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
 
+import br.com.caelum.vraptor.core.Localization;
 import br.com.caelum.vraptor.environment.Environment;
 import br.com.caelum.vraptor.freemarker.Freemarker;
-import br.com.caelum.vraptor4.core.Localization;
 
 public class DefaultTemplateMailer implements TemplateMailer {
 
