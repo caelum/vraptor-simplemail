@@ -5,9 +5,8 @@ import java.util.concurrent.Executors;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
-
-import br.com.caelum.vraptor4.ioc.ApplicationScoped;
 
 @ApplicationScoped
 public class ExecutorServiceProvider{

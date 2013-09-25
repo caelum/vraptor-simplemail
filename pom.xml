@@ -34,15 +34,28 @@
 		</dependency>
 		<dependency>
 			<groupId>br.com.caelum</groupId>
-			<artifactId>vraptor4</artifactId>
-			<version>4.0-SNAPSHOT</version>
-			<scope>compile</scope>
+			<artifactId>vraptor</artifactId>
+			<version>4.0.0.beta-SNAPSHOT</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>javax.enterprise</groupId>
+			<artifactId>cdi-api</artifactId>
+			<version>1.1</version>
+		</dependency>		
+		
 		<dependency>
 			<groupId>br.com.caelum.vraptor</groupId>
 			<artifactId>vraptor-environment</artifactId>
 			<version>1.1.5-SNAPSHOT</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>br.com.caelum.vraptor</groupId>
+			<artifactId>vraptor-freemarker</artifactId>
+			<version>1.1.3-SNAPSHOT</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-email</artifactId>
@@ -86,8 +99,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.3.2</version>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.7</source>
+					<target>1.7</target>
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>

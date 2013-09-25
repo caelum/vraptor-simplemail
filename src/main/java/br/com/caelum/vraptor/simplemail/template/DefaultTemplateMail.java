@@ -3,8 +3,10 @@ package br.com.caelum.vraptor.simplemail.template;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.ResourceBundle;
 
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
@@ -16,7 +18,6 @@ import org.apache.commons.mail.HtmlEmail;
 
 import br.com.caelum.vraptor.freemarker.Freemarker;
 import br.com.caelum.vraptor.freemarker.Template;
-import br.com.caelum.vraptor4.core.Localization;
 
 public class DefaultTemplateMail implements TemplateMail {
 	
@@ -24,19 +25,19 @@ public class DefaultTemplateMail implements TemplateMail {
 	private final HashMap<String, DataSource> toAttach = new HashMap<String, DataSource>();
 
 	private final Template template;
-	private final Localization localization;
 	private final String templateName;
 	private final Object[] nameParameters;
 	private final String appLocation;
 
 	private boolean hasSigner;
+	private ResourceBundle bundle;
 
-	public DefaultTemplateMail(String templateName, Freemarker freemarker, Localization localization, String appLocation, Object... nameParameters) throws IOException {
+	public DefaultTemplateMail(String templateName, Freemarker freemarker, String appLocation, ResourceBundle bundle, Object... nameParameters) throws IOException {
 		this.templateName = templateName;
 		this.appLocation = appLocation;
+		this.bundle = bundle;
 		this.nameParameters = nameParameters;
 		this.template = freemarker.use(templateName);
-		this.localization = localization;
 	}
 
 	@Override
@@ -58,7 +59,7 @@ public class DefaultTemplateMail implements TemplateMail {
 		with("to_email", toMail);
 		with("host", appLocation);
 		if (!hasSigner) {
-			with("signer", this.localization.getMessage("signer"));
+			with("signer", bundle.getString("signer"));
 		}
 
 		HtmlEmail email = new HtmlEmail();
@@ -68,7 +69,11 @@ public class DefaultTemplateMail implements TemplateMail {
 			addAttachments(email);
 			
 			email.addTo(toMail, name);
-			email.setSubject(this.localization.getMessage(this.templateName, nameParameters));
+			
+			String subjectMessage = this.bundle.getString(this.templateName); 
+			String subject = MessageFormat.format(subjectMessage, nameParameters);
+			email.setSubject(subject);
+			
 			email.setHtmlMsg(this.template.getContent());
 		} catch (Exception e) {
 			throw new RuntimeException(e);

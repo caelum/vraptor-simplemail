@@ -2,6 +2,7 @@ package br.com.caelum.vraptor.simplemail;
 
 import java.lang.reflect.InvocationTargetException;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 
@@ -10,7 +11,6 @@ import org.slf4j.LoggerFactory;
 
 import br.com.caelum.vraptor.environment.Environment;
 import br.com.caelum.vraptor.simplemail.aws.MockMailer;
-import br.com.caelum.vraptor4.ioc.ApplicationScoped;
 
 @ApplicationScoped
 public class MailerFactory  {

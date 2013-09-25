@@ -1,9 +1,5 @@
 package br.com.caelum.vraptor.simplemail;
 
-import java.lang.reflect.Method;
-
-import net.vidageek.mirror.dsl.Mirror;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,13 +7,8 @@ import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import br.com.caelum.vraptor4.InterceptionException;
-import br.com.caelum.vraptor4.core.InterceptorStack;
-import br.com.caelum.vraptor4.interceptor.Interceptor;
-import br.com.caelum.vraptor4.interceptor.SimpleInterceptorStack;
-import br.com.caelum.vraptor4.restfulie.controller.ControllerMethod;
-import br.com.caelum.vraptor4.restfulie.controller.DefaultBeanClass;
-import br.com.caelum.vraptor4.restfulie.controller.DefaultControllerMethod;
+import br.com.caelum.vraptor.InterceptionException;
+import br.com.caelum.vraptor.interceptor.SimpleInterceptorStack;
 
 import static org.junit.Assert.fail;
 
