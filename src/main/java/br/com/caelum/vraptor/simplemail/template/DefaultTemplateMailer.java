@@ -13,13 +13,13 @@ public class DefaultTemplateMailer implements TemplateMailer {
 
 	private Freemarker freemarker;
 	private String appPath;
-	private ResourceBundle bundle;
+	private BundleFormatter bundle;
 	
 	@Deprecated //CDI eyes only
 	public DefaultTemplateMailer() {}
 	
 	@Inject
-	public DefaultTemplateMailer(Freemarker freemarker, ServletContext context, Environment env, ResourceBundle bundle) {
+	public DefaultTemplateMailer(Freemarker freemarker, ServletContext context, Environment env, BundleFormatter bundle) {
 		this.freemarker = freemarker;
 		this.bundle = bundle;
 		this.appPath = env.get("host") + context.getContextPath();
