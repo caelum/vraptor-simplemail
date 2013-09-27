@@ -31,9 +31,6 @@ public class MailerFactory implements ComponentFactory<Mailer> {
 	}
 
 	private Mailer grabInstance() {
-		if (env.getName().equals("development")) {
-			return new MockMailer();
-		}
 		try {
 			return instantiateWithEnv();
 		} catch (Exception e) {
@@ -57,6 +54,11 @@ public class MailerFactory implements ComponentFactory<Mailer> {
 	}
 
 	private Class<?> getImplementationName() throws ClassNotFoundException {
+		
+		if (!env.has(MAILER_IMPLEMENTATION) && env.getName().equals("development")) {
+			return MockMailer.class;
+		}
+
 		if (!env.has(MAILER_IMPLEMENTATION)) {
 			return DefaultMailer.class;
 		}

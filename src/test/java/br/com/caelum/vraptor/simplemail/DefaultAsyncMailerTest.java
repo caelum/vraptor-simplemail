@@ -1,6 +1,7 @@
 package br.com.caelum.vraptor.simplemail;
 
 import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -27,6 +28,8 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 
+import br.com.caelum.vraptor.environment.Environment;
+
 @RunWith(MockitoJUnitRunner.class)
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class DefaultAsyncMailerTest {
@@ -35,10 +38,13 @@ public class DefaultAsyncMailerTest {
 	@Mock
 	private Mailer mockMailer;
 	private AsyncMailer mailer;
+	
+	@Mock
+	private Environment env;
 
 	@Before
 	public void setUp() throws Exception {
-		mailer = new DefaultAsyncMailer(mockExecutor, mockMailer);
+		mailer = new DefaultAsyncMailer(mockExecutor, mockMailer,env);
 		setupMockExecutorService();
 	}
 
@@ -49,6 +55,21 @@ public class DefaultAsyncMailerTest {
 		mailer.asyncSend(email);
 
 		verify(mockMailer, times(1)).send(email);
+		verifyNoMoreInteractions(mockMailer);
+	}
+	@Test
+	public void should_submit_to_a_default_to() throws Exception {
+		Email email = new SimpleEmail();
+		String defaultTo = "teste@default.com";
+		
+		when(env.has(Mailer.DEFAULT_TO_PROPERTIES)).thenReturn(true);
+		when(env.get(Mailer.DEFAULT_TO_PROPERTIES)).thenReturn(defaultTo);
+		
+		mailer.asyncSend(email);
+		verify(mockMailer, times(1)).send(email);
+		assertEquals(defaultTo, email.getToAddresses().get(0));
+		assertTrue(email.getBccAddresses().isEmpty());
+		assertTrue(email.getCcAddresses().isEmpty());
 		verifyNoMoreInteractions(mockMailer);
 	}
 
