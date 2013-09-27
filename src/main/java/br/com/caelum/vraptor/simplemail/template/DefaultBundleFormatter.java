@@ -20,7 +20,7 @@ public class DefaultBundleFormatter implements BundleFormatter{
 		
 		String message = bundle.getString(key);
 		
-		if(params != null){
+		if(params.length > 0){
 			message = MessageFormat.format(message,params);
 		}
 		
