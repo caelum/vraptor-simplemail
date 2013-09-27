@@ -55,11 +55,13 @@ public class MailerFactory implements ComponentFactory<Mailer> {
 
 	private Class<?> getImplementationName() throws ClassNotFoundException {
 		
-		if (!env.has(MAILER_IMPLEMENTATION) && env.getName().equals("development")) {
+		boolean hasNoImplementation = !env.has(MAILER_IMPLEMENTATION);
+		boolean isDevelopment = env.getName().equals("development");
+		if (hasNoImplementation && isDevelopment) {
 			return MockMailer.class;
 		}
 
-		if (!env.has(MAILER_IMPLEMENTATION)) {
+		if (hasNoImplementation) {
 			return DefaultMailer.class;
 		}
 		return Class.forName(env.get(MAILER_IMPLEMENTATION));
