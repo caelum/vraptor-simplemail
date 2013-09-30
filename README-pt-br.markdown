@@ -169,6 +169,24 @@ implementação simplesmente loga o envio dos emails com o sl4j.
 Em qualquer outro ambiente, o vraptor-simplemail usará o DefaultMailer ou a classe que pode
 ser especificada com a propriedade `mailer.implementation` do arquivo .properties do vraptor-environment.
 
+# amazon SES
+Você pode enviar emails usando o serviço do Amazon SES
+(http://aws.amazon.com/ses/).  Para usar o SES, você precisa configurar o
+vraptor-simplemail para usar o mailer do SES no .properties do seu ambiente:
+
+    mailer.implementation = br.com.caelum.vraptor.simplemail.aws.AmazonSESMailer
+
+Esse mailer enviará emails reais somente no ambiente "production". No ambiente
+"development", por exemplo, ele vai apenas logar os emails com o log4j.
+
+Se você você precisa enviar emails reais em algum ambiente que não seja
+"production", você pode configurar esse comportamento no arquivo properties do
+seu ambiente. Por exemplo, se você precisa enviar emails reais no ambiente
+"testing", as seguintes configurações precisam ser adicionadas no arquivo
+testing.properties:
+
+    mailer.implementation = br.com.caelum.vraptor.simplemail.aws.AmazonSESMailer
+    vraptor.simplemail.send_real_email = true
 
 # ajuda
 
