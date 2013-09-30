@@ -1,6 +1,7 @@
 package br.com.caelum.vraptor.simplemail.template;
 
 import java.text.MessageFormat;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 import javax.inject.Inject;
@@ -17,14 +18,16 @@ public class DefaultBundleFormatter implements BundleFormatter{
 	
 	@Override
 	public String getMessage(String key, Object... params) {
-		
-		String message = bundle.getString(key);
-		
-		if(params.length > 0){
-			message = MessageFormat.format(message,params);
-		}
-		
-		return message;
+		return MessageFormat.format(getMessage(key), params);
 	}
-	
+
+	@Override
+	public String getMessage(String key) {
+		return bundle.getString(key);
+	}
+
+	@Override
+	public String getMessage(String key, Object first) {
+		return MessageFormat.format(getMessage(key), first);
+	}
 }
