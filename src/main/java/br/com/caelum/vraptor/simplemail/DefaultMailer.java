@@ -1,5 +1,7 @@
 package br.com.caelum.vraptor.simplemail;
 
+import java.util.Arrays;
+
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.Email;
 import org.apache.commons.mail.EmailException;
@@ -49,6 +51,12 @@ public class DefaultMailer implements Mailer {
 			String replyTo = env.get(REPLY_TO);
 			email.addReplyTo(replyTo);
 		}
+	    if(env.has(Mailer.DEFAULT_TO_PROPERTIES)){
+	    	email.setTo(Arrays.asList(new String[] {env.get(Mailer.DEFAULT_TO_PROPERTIES)}));
+	    	email.getBccAddresses().clear();
+	    	email.getCcAddresses().clear();
+	    };
+
 		wrapUpAndSend(email);
 	}
 

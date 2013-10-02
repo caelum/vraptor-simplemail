@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.Properties;
 
 import javax.mail.MessagingException;
@@ -66,6 +67,11 @@ public class AmazonSESMailer implements Mailer {
 			if (env.has(REPLY_TO)) {
 				email.addReplyTo(env.get(REPLY_TO));
 			}
+			if(env.has(Mailer.DEFAULT_TO_PROPERTIES)){
+		    	email.setTo(Arrays.asList(new String[] {env.get(Mailer.DEFAULT_TO_PROPERTIES)}));
+		    	email.getBccAddresses().clear();
+			   	email.getCcAddresses().clear();
+			 };
 
 			email.setMailSession(session);
 
