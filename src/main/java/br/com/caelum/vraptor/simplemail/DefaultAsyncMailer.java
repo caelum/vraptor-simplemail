@@ -1,7 +1,6 @@
 package br.com.caelum.vraptor.simplemail;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,7 +15,6 @@ import org.apache.commons.mail.EmailException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import br.com.caelum.vraptor.environment.Environment;
 import br.com.caelum.vraptor.ioc.Component;
 import br.com.caelum.vraptor.ioc.ComponentFactory;
 import br.com.caelum.vraptor.ioc.RequestScoped;
@@ -39,27 +37,15 @@ public class DefaultAsyncMailer implements AsyncMailer {
 	private final Mailer mailer;
 	private final Queue<Email> mailQueue = new LinkedList<Email>();
 
-	private Environment env;
 
-	public DefaultAsyncMailer(ExecutorService executor, Mailer mailer,Environment env) {
+	public DefaultAsyncMailer(ExecutorService executor, Mailer mailer) {
 		this.executor = executor;
 		this.mailer = mailer;
-		this.env = env;
 	}
 
 	@Override
 	public Future<Void> asyncSend(final Email email) {
 		LOGGER.debug("New email to be sent asynchronously: {} to {}", email.getSubject(), email.getToAddresses());
-		try {
-			if(env.has(Mailer.DEFAULT_TO_PROPERTIES)){
-		    	email.setTo(Arrays.asList(new String[] {env.get(Mailer.DEFAULT_TO_PROPERTIES)}));
-		    	email.getBccAddresses().clear();
-		    	email.getCcAddresses().clear();
-		    };
-
-		} catch (EmailException e) {
-			throw new RuntimeException("Unable to set default TO",e);
-		}
 		Callable<Void> task = new Callable<Void>() {
 			@Override
 			public Void call() throws EmailException {
