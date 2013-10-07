@@ -27,6 +27,8 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 
+import br.com.caelum.vraptor.environment.Environment;
+
 @RunWith(MockitoJUnitRunner.class)
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class DefaultAsyncMailerTest {
@@ -35,6 +37,9 @@ public class DefaultAsyncMailerTest {
 	@Mock
 	private Mailer mockMailer;
 	private AsyncMailer mailer;
+	
+	@Mock
+	private Environment env;
 
 	@Before
 	public void setUp() throws Exception {

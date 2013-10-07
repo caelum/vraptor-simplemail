@@ -1,5 +1,4 @@
 package br.com.caelum.vraptor.simplemail.aws;
-
 import net.vidageek.mirror.dsl.Mirror;
 
 import org.apache.commons.mail.Email;

@@ -37,6 +37,7 @@ public class DefaultAsyncMailer implements AsyncMailer {
 	private final Mailer mailer;
 	private final Queue<Email> mailQueue = new LinkedList<Email>();
 
+
 	public DefaultAsyncMailer(ExecutorService executor, Mailer mailer) {
 		this.executor = executor;
 		this.mailer = mailer;
