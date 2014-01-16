@@ -14,6 +14,7 @@ import org.apache.commons.mail.Email;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
 
+import freemarker.template.Configuration;
 import br.com.caelum.vraptor.core.Localization;
 import br.com.caelum.vraptor.freemarker.Freemarker;
 import br.com.caelum.vraptor.freemarker.Template;
@@ -31,12 +32,20 @@ public class DefaultTemplateMail implements TemplateMail {
 
 	private boolean hasSigner;
 
+	public DefaultTemplateMail(String templateName, Freemarker freemarker, Localization localization, String appLocation, Configuration configuration, Object... nameParameters) throws IOException {
+		this(templateName, freemarker.use(templateName, configuration), localization, appLocation, nameParameters);
+	}
+
 	public DefaultTemplateMail(String templateName, Freemarker freemarker, Localization localization, String appLocation, Object... nameParameters) throws IOException {
+		this(templateName, freemarker.use(templateName), localization, appLocation, nameParameters);
+	}
+
+	public DefaultTemplateMail(String templateName, Template template, Localization localization, String appLocation, Object... nameParameters) throws IOException {
 		this.templateName = templateName;
+		this.template = template;
+		this.localization = localization;
 		this.appLocation = appLocation;
 		this.nameParameters = nameParameters;
-		this.template = freemarker.use(templateName);
-		this.localization = localization;
 	}
 
 	@Override
