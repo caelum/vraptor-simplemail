@@ -143,6 +143,28 @@ step, you will receive an instance of `Email` ready to be sent.
 		mailer.asyncSend(email); // Hostname, port and security settings are made by the Mailer
 	}
 
+You can also use a custom freemarker configuration calling the method `with(configuration)` before `.template`:
+
+```java
+@Path("/password/send")
+@Post
+public void sendNewPassword() {
+	Configuration configuration = new Configuration();
+	//configure 
+
+	Email email = this.templates
+			.with(configuration)
+			.template("forgotMail.ftl")
+			.with("user", this.user)
+			.with("password", this.user.generateNewPassword())
+			.to(this.user.getName(), this.user.getEmail());
+	mailer.asyncSend(email); // Hostname, port and security settings are made by the Mailer
+}
+```
+
+Obs: This configuration will be read on every request. Its NOT application scoped
+
+
 # environments
 
 Vraptor-simplemail uses vraptor-environment to manage different mail server configurations
