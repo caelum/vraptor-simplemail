@@ -7,74 +7,75 @@ processing of a request while the e-mail is sent.
 # installing
 
 Vraptor-simplemail.jar can be downloaded from mavens repository, or configured in any compatible tool:
-
+```xml
 	<dependency>
 		<groupId>br.com.caelum.vraptor</groupId>
 		<artifactId>vraptor-simplemail</artifactId>
 		<version>1.2.1</version>
 		<scope>compile</scope>
 	</dependency>
-
+```
 Vraptor-simplemail depends upon Apache's Commons Email library (http://commons.apache.org/email/).
 
 # usage
 
 In your controller:
+```java
+@Resource
+public class PasswordResetterController {
 
-	@Resource
-	public class PasswordResetterController {
+	private final User user;
+	private final Mailer mailer;
 
-		private final User user;
-		private final Mailer mailer;
-
-		public PasswordResetterController(User user, Mailer mailer) {
-			this.user = user;
-			this.mailer = mailer;
-		}
-
-		@Path("/password/send")
-		@Post
-		public void sendNewPassword() {
-			Email email = new SimpleMail();
-			email.setSubject("Your new password");
-			email.addTo(user.getEmail());
-			email.setMsg(user.generateNewPassword());
-			mailer.send(email); // Hostname, port and security settings are made by the Mailer
-		}
-
+	public PasswordResetterController(User user, Mailer mailer) {
+		this.user = user;
+		this.mailer = mailer;
 	}
 
+	@Path("/password/send")
+	@Post
+	public void sendNewPassword() {
+		Email email = new SimpleMail();
+		email.setSubject("Your new password");
+		email.addTo(user.getEmail());
+		email.setMsg(user.generateNewPassword());
+		mailer.send(email); // Hostname, port and security settings are made by the Mailer
+	}
+
+}
+```
 Or, if you want to send e-mails in a different thread, so that the process is
 not blocked while the e-mail is sent:
+```java
+@Resource
+public class PasswordResetterController {
 
-	@Resource
-	public class PasswordResetterController {
+	private final User user;
+	private final AsyncMailer mailer;
 
-		private final User user;
-		private final AsyncMailer mailer;
-
-		public PasswordResetterController(User user, AsyncMailer mailer) {
-			this.user = user;
-			this.mailer = mailer;
-		}
-
-		@Path("/password/send")
-		@Post
-		public void sendNewPassword() {
-			Email email = new SimpleMail();
-			email.setSubject("Your new password");
-			email.addTo(user.getEmail());
-			email.setMsg(user.generateNewPassword());
-			mailer.asyncSend(email); // Hostname, port and security settings are made by the Mailer
-		}
-
+	public PasswordResetterController(User user, AsyncMailer mailer) {
+		this.user = user;
+		this.mailer = mailer;
 	}
 
+	@Path("/password/send")
+	@Post
+	public void sendNewPassword() {
+		Email email = new SimpleMail();
+		email.setSubject("Your new password");
+		email.addTo(user.getEmail());
+		email.setMsg(user.generateNewPassword());
+		mailer.asyncSend(email); // Hostname, port and security settings are made by the Mailer
+	}
+
+}
+```
 In this case, you also need to implement a class to create a thread to send the
 e-mail. This is done by implementing a factory of ExecutorService (an interface
 from java.util.concurrent package). For instance, if you want to use a thread
 pool of a fixed size, you need to create this factory:
 
+```java
 	@Component
 	@ApplicationScoped
 	public class ThreadProvider implements ComponentFactory<ExecutorService> {
@@ -95,6 +96,7 @@ pool of a fixed size, you need to create this factory:
 			this.pool.shutdown();
 		}
 	}
+``` 
 
 You can also send e-mails in a transaction-like fashion: send as many e-mails
 as you want inside your controller and, if an exception occurs, cancel all
@@ -112,6 +114,7 @@ To use simplemail with Freemarker, you will also need vraptor-freemarker. Put
 your templates inside a folder called `templates` and, to use them, ask for a
 `TemplateMailer` in your controller's constructor.
 
+```java
 	@Resource
 	public class PasswordResetterController {
 
@@ -127,21 +130,24 @@ your templates inside a folder called `templates` and, to use them, ask for a
 
 		// controller's methods
 	}
+```
 
 Then, to create and send an e-mail, specify which template you want to use,
 bind the necessary variables and, finally, specify the addressee. In this last
 step, you will receive an instance of `Email` ready to be sent.
 
-	@Path("/password/send")
-	@Post
-	public void sendNewPassword() {
-		Email email = this.templates
-				.template("forgotMail.ftl")
-				.with("user", this.user)
-				.with("password", this.user.generateNewPassword())
-				.to(this.user.getName(), this.user.getEmail());
-		mailer.asyncSend(email); // Hostname, port and security settings are made by the Mailer
-	}
+```java
+@Path("/password/send")
+@Post
+public void sendNewPassword() {
+	Email email = this.templates
+			.template("forgotMail.ftl")
+			.with("user", this.user)
+			.with("password", this.user.generateNewPassword())
+			.to(this.user.getName(), this.user.getEmail());
+	mailer.asyncSend(email); // Hostname, port and security settings are made by the Mailer
+}
+```
 
 You can also use a custom freemarker configuration calling the method `with(configuration)` before `.template`:
 
