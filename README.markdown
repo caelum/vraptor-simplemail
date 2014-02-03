@@ -35,7 +35,7 @@ public class PasswordResetterController {
 	@Path("/password/send")
 	@Post
 	public void sendNewPassword() {
-		Email email = new SimpleMail();
+		Email email = new SimpleEmail();
 		email.setSubject("Your new password");
 		email.addTo(user.getEmail());
 		email.setMsg(user.generateNewPassword());
@@ -61,7 +61,7 @@ public class PasswordResetterController {
 	@Path("/password/send")
 	@Post
 	public void sendNewPassword() {
-		Email email = new SimpleMail();
+		Email email = new SimpleEmail();
 		email.setSubject("Your new password");
 		email.addTo(user.getEmail());
 		email.setMsg(user.generateNewPassword());
