@@ -48,9 +48,13 @@ public class DefaultAsyncMailer implements AsyncMailer {
 		LOGGER.debug("New email to be sent asynchronously: {} to {}", email.getSubject(), email.getToAddresses());
 		Callable<Void> task = new Callable<Void>() {
 			@Override
-			public Void call() throws EmailException {
+			public Void call() {
 				LOGGER.debug("Asynchronously sending email {} to {}", email.getSubject(), email.getToAddresses());
-				DefaultAsyncMailer.this.mailer.send(email);
+				try {
+					DefaultAsyncMailer.this.mailer.send(email);
+				} catch (EmailException e) {
+					LOGGER.error("Error while sending async email " + email.getSubject() + " to " + email.getToAddresses(), e);
+				}
 				return null;
 			}
 		};
