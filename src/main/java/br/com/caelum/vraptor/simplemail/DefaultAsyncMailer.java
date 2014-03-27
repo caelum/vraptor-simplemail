@@ -20,8 +20,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A simple implementation of an asynchronous mailer. It relies upon an instance
- * of {@link ExecutorService} to distribute tasks among threads. This
- * {@link ExecutorService} must be provided by a {@link ComponentFactory}.
+ * of {@link ExecutorService} to distribute tasks among threads. 
  *
  * @author luiz
  * @author victorkendy

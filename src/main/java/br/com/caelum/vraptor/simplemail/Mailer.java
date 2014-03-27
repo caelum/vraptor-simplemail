@@ -22,9 +22,6 @@ public interface Mailer {
 	/**
 	 * Sends an email using the main mailer configuration. If server, port, tls or authenticator
 	 * have been set, they will not be overriden.
-	 *
-	 * @param email
-	 * @throws EmailException
 	 */
 	void send(Email email) throws EmailException;
 
