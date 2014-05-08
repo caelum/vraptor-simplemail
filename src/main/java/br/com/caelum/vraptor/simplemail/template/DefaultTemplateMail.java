@@ -79,11 +79,11 @@ public class DefaultTemplateMail implements TemplateMail {
 			addAttachments(email);
 			
 			email.addTo(toMail, name);
-			boolean hasNoSubjectDefined = this.localization.getMessage(name,
-					nameParameters).equals("???" + name + "???");
+			boolean hasNoSubjectDefined = this.localization.getMessage(templateName,
+					nameParameters).equals("???" + templateName + "???");
 			if (hasNoSubjectDefined) {
 				throw new IllegalArgumentException(
-						"Subject not defined for email template : " + name);
+						"Subject not defined for email template : " + templateName);
 			} else {
 				email.setSubject(this.localization.getMessage(this.templateName, nameParameters));
 			}
