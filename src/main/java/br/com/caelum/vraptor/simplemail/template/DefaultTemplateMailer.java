@@ -16,8 +16,8 @@ public class DefaultTemplateMailer implements TemplateMailer {
 	private final Freemarker freemarker;
 	private final Localization localization;
 	private Configuration configuration;
-	private ServletContext context;
-	private Environment env;
+	private final ServletContext context;
+	private final Environment env;
 
 	public DefaultTemplateMailer(Localization localization, Freemarker freemarker, ServletContext context, Environment env) {
 		this.localization = localization;
@@ -25,7 +25,7 @@ public class DefaultTemplateMailer implements TemplateMailer {
 		this.context = context;
 		this.env = env;
 	}
-
+	
 	@Override
 	public TemplateMail template(String name, Object... nameParameters) {
 		String appPath = env.get("host") + context.getContextPath();
@@ -49,7 +49,8 @@ public class DefaultTemplateMailer implements TemplateMailer {
 	}
 
 	private void setConfiguration(Configuration configuration) {
-		this.configuration = configuration;
+		this.configuration = configuration;		
 	}
+	
 
 }
