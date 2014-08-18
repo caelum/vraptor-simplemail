@@ -19,6 +19,8 @@ import org.apache.commons.mail.EmailException;
  */
 public interface Mailer {
 
+	public static String DEFAULT_TO_PROPERTIES = "vraptor.simplemail.default_to";
+
 	/**
 	 * Sends an email using the main mailer configuration. If server, port, tls or authenticator
 	 * have been set, they will not be overriden.

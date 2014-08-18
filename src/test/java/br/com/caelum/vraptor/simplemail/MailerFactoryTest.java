@@ -61,6 +61,14 @@ public class MailerFactoryTest {
 		MyMailerWithEnv mailerWithEnv = (MyMailerWithEnv) secondMailer;
 		assertThat(mailerWithEnv.getMyEnv(), equalTo(env));
 	}
+	
+	@Test
+	public void should_create_mailer_from_properties_if_specified_and_in_development() throws Exception {
+		when(env.getName()).thenReturn("development");
+		when(env.has(MailerFactory.MAILER_IMPLEMENTATION)).thenReturn(true);
+		when(env.get(MailerFactory.MAILER_IMPLEMENTATION)).thenReturn(MyMailer.class.getName());
+		assertThat(factory.getInstance(), instanceOf(MyMailer.class));
+	}
 
 	public static class MyMailer implements Mailer {
 		@Override

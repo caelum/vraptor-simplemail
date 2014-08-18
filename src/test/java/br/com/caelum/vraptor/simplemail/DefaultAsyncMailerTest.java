@@ -105,7 +105,7 @@ public class DefaultAsyncMailerTest {
 
 		assertFalse(mailer.hasMailToDeliver());
 	}
-
+	
 	private void setupMockExecutorService() throws Exception {
 		Answer<?> sendMail = new Answer<Void>() {
 			@Override

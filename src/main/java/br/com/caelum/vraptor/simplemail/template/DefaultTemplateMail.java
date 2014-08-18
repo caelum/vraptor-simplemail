@@ -16,6 +16,7 @@ import org.apache.commons.mail.HtmlEmail;
 
 import br.com.caelum.vraptor.freemarker.Freemarker;
 import br.com.caelum.vraptor.freemarker.Template;
+import freemarker.template.Configuration;
 
 public class DefaultTemplateMail implements TemplateMail {
 
@@ -30,14 +31,24 @@ public class DefaultTemplateMail implements TemplateMail {
 	private boolean hasSigner;
 	private BundleFormatter bundle;
 
+	
+	public DefaultTemplateMail(String templateName, Freemarker freemarker, String appLocation, Configuration configuration, BundleFormatter bundle, Object... nameParameters) throws IOException {
+		this(templateName, freemarker.use(templateName, configuration), appLocation, bundle, nameParameters);
+	}
+
 	public DefaultTemplateMail(String templateName, Freemarker freemarker, String appLocation, BundleFormatter bundle, Object... nameParameters) throws IOException {
+		this(templateName, freemarker.use(templateName), appLocation, bundle, nameParameters);
+	}
+
+	public DefaultTemplateMail(String templateName, Template template, String appLocation, BundleFormatter bundle, Object... nameParameters) throws IOException {
 		this.templateName = templateName;
+		this.template = template;
 		this.appLocation = appLocation;
 		this.bundle = bundle;
 		this.nameParameters = nameParameters;
-		this.template = freemarker.use(templateName);
 	}
-
+	
+	
 	@Override
 	public TemplateMail with(String key, Object value) {
 		if (key.equals("signer")) {
@@ -61,11 +72,19 @@ public class DefaultTemplateMail implements TemplateMail {
 		}
 
 		HtmlEmail email = new HtmlEmail();
+		email.setCharset("utf-8");
 		try {
 			addEmbeddables(email);
 			addAttachments(email);
 			email.addTo(toMail, name);
-			email.setSubject(bundle.getMessage(this.templateName, nameParameters));
+			boolean hasNoSubjectDefined = this.bundle.getMessage(templateName,
+					nameParameters).equals("???" + templateName + "???");
+			if (hasNoSubjectDefined) {
+				throw new IllegalArgumentException(
+						"Subject not defined for email template : " + templateName);
+			} else {
+				email.setSubject(this.bundle.getMessage(this.templateName, nameParameters));
+			}
 			email.setHtmlMsg(this.template.getContent());
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -74,16 +93,16 @@ public class DefaultTemplateMail implements TemplateMail {
 	}
 
 	protected void addEmbeddables(HtmlEmail email) throws EmailException {
-		for(Entry<String,DataSource> entry : toEmbed.entrySet()){
+		for (Entry<String, DataSource> entry : toEmbed.entrySet()) {
 			String key = entry.getKey();
-			String cid = email.embed(entry.getValue(),key);
+			String cid = email.embed(entry.getValue(), key);
 			with(key, "cid:" + cid);
 		}
 	}
 
 	protected void addAttachments(HtmlEmail email) throws EmailException {
-		for(Entry<String,DataSource> entry : toAttach.entrySet()){
-			email.attach(entry.getValue(),entry.getKey(),"");
+		for (Entry<String, DataSource> entry : toAttach.entrySet()) {
+			email.attach(entry.getValue(), entry.getKey(), "");
 		}
 	}
 

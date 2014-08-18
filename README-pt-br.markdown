@@ -36,7 +36,7 @@ No seu controlador:
 		@Path("/password/send")
 		@Post
 		public void sendNewPassword() {
-			Email email = new SimpleMail();
+			Email email = new SimpleEmail();
 			email.setSubject("Your new password");
 			email.addTo(user.getEmail());
 			email.setMsg(user.generateNewPassword());
@@ -62,7 +62,7 @@ bloquear o processamento enquanto o e-mail é enviado:
 		@Path("/password/send")
 		@Post
 		public void sendNewPassword() {
-			Email email = new SimpleMail();
+			Email email = new SimpleEmail();
 			email.setSubject("Your new password");
 			email.addTo(user.getEmail());
 			email.setMsg(user.generateNewPassword());
@@ -147,6 +147,29 @@ para envio.
 		mailer.asyncSend(email); // As configurações restantes são feitas pelo Mailer
 	}
 
+
+Você pode também utilizar uma configuração diferente para o freemarkerchamando o método `with(configuration)` antes do método `.template()`:
+
+```java
+@Path("/password/send")
+@Post
+public void sendNewPassword() {
+	Configuration configuration = new Configuration();
+	//configure 
+
+	Email email = this.templates
+			.with(configuration)
+			.template("forgotMail.ftl")
+			.with("user", this.user)
+			.with("password", this.user.generateNewPassword())
+			.to(this.user.getName(), this.user.getEmail());
+	mailer.asyncSend(email); // Hostname, port and security settings are made by the Mailer
+}
+```
+
+Obs: Essa configuração será lida a cada request. Ela NÃO É application scoped
+
+
 # ambientes
 
 O vraptor-simplemail usa o vraptor-environment para gerenciar diferentes configurações de servidores
@@ -169,6 +192,24 @@ implementação simplesmente loga o envio dos emails com o sl4j.
 Em qualquer outro ambiente, o vraptor-simplemail usará o DefaultMailer ou a classe que pode
 ser especificada com a propriedade `mailer.implementation` do arquivo .properties do vraptor-environment.
 
+# amazon SES
+Você pode enviar emails usando o serviço do Amazon SES
+(http://aws.amazon.com/ses/).  Para usar o SES, você precisa configurar o
+vraptor-simplemail para usar o mailer do SES no .properties do seu ambiente:
+
+    mailer.implementation = br.com.caelum.vraptor.simplemail.aws.AmazonSESMailer
+
+Esse mailer enviará emails reais somente no ambiente "production". No ambiente
+"development", por exemplo, ele vai apenas logar os emails com o log4j.
+
+Se você você precisa enviar emails reais em algum ambiente que não seja
+"production", você pode configurar esse comportamento no arquivo properties do
+seu ambiente. Por exemplo, se você precisa enviar emails reais no ambiente
+"testing", as seguintes configurações precisam ser adicionadas no arquivo
+testing.properties:
+
+    mailer.implementation = br.com.caelum.vraptor.simplemail.aws.AmazonSESMailer
+    vraptor.simplemail.send_real_email = true
 
 # ajuda
 
