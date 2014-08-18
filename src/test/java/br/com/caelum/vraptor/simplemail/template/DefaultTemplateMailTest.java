@@ -34,7 +34,7 @@ public class DefaultTemplateMailTest {
 
 	@Test
 	public void should_throw_exception_if_there_is_no_subject_at_messages_properties(){
-		when(bundle.getMessage(templateName, null)).thenReturn("???"+templateName+"???");
+		when(bundle.getMessage(templateName, new Object[]{null, null})).thenReturn("???"+templateName+"???");
 		
 		try {
 			templateMail.prepareEmail("leo", "leo@leo.com");
@@ -46,7 +46,7 @@ public class DefaultTemplateMailTest {
 	
 	@Test
 	public void should_not_throw_exception_if_there_is_a_subject_at_messages_properties() throws IOException, TemplateException {
-		when(bundle.getMessage(templateName, null)).thenReturn("real template title");
+		when(bundle.getMessage(templateName, new Object[]{null, null})).thenReturn("real template title");
 		
 		DefaultTemplateMail templateMail = new DefaultTemplateMail(templateName, template, null, bundle, null, null);
 		
