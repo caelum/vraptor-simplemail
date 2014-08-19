@@ -1,6 +1,7 @@
 package br.com.caelum.vraptor.simplemail;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,6 +18,8 @@ import org.apache.commons.mail.Email;
 import org.apache.commons.mail.EmailException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import br.com.caelum.vraptor.environment.Environment;
 
 /**
  * A simple implementation of an asynchronous mailer. It relies upon an instance
@@ -49,9 +52,15 @@ public class DefaultAsyncMailer implements AsyncMailer {
 		LOGGER.debug("New email to be sent asynchronously: {} to {}", email.getSubject(), email.getToAddresses());
 		Callable<Void> task = new Callable<Void>() {
 			@Override
-			public Void call() throws EmailException {
-				LOGGER.debug("Asynchronously sending email {} to {}", email.getSubject(), email.getToAddresses());
-				DefaultAsyncMailer.this.mailer.send(email);
+			public Void call()  {
+				try {
+					DefaultAsyncMailer.this.mailer.send(email);
+				} catch (EmailException e) {
+					LOGGER.error(
+							"Error while sending async email "
+									+ email.getSubject() + " to "
+									+ email.getToAddresses(), e);
+				}
 				return null;
 			}
 		};

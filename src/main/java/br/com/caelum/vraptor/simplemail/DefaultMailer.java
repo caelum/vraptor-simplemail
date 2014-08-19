@@ -49,6 +49,12 @@ public class DefaultMailer implements Mailer {
 			String replyTo = env.get(REPLY_TO);
 			email.addReplyTo(replyTo);
 		}
+		if (env.has(Mailer.DEFAULT_TO_PROPERTIES)) {
+			email.getToAddresses().clear();
+			email.addTo(env.get(Mailer.DEFAULT_TO_PROPERTIES));
+			email.getBccAddresses().clear();
+			email.getCcAddresses().clear();
+		}
 		wrapUpAndSend(email);
 	}
 

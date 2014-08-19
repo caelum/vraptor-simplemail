@@ -61,7 +61,14 @@ public class MailerFactory  {
 	}
 
 	private Class<?> getImplementationName() throws ClassNotFoundException {
-		if (!env.has(MAILER_IMPLEMENTATION)) {
+		
+		boolean hasNoImplementation = !env.has(MAILER_IMPLEMENTATION);
+		boolean isDevelopment = env.getName().equals("development");
+		if (hasNoImplementation && isDevelopment) {
+			return MockMailer.class;
+		}
+
+		if (hasNoImplementation) {
 			return DefaultMailer.class;
 		}
 		return Class.forName(env.get(MAILER_IMPLEMENTATION));
