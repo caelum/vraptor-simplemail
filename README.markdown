@@ -11,7 +11,7 @@ Vraptor-simplemail.jar can be downloaded from mavens repository, or configured i
 	<dependency>
 		<groupId>br.com.caelum.vraptor</groupId>
 		<artifactId>vraptor-simplemail</artifactId>
-		<version>1.2.1</version>
+		<version>1.3.3</version>
 		<scope>compile</scope>
 	</dependency>
 ```
