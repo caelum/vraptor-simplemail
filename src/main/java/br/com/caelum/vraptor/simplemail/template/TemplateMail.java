@@ -69,4 +69,15 @@ public interface TemplateMail {
 	 *         {@link AsyncMailer}
 	 */
 	public Email to(String name, String toMail);
+
+	/**
+	 * Assembles the e-mail to the given bcc
+	 *
+	 * @param name
+	 *            bcc name
+	 * @param toMail
+	 *            bcc e-mail
+	 * @return The same TemplateMail object
+	 */
+	TemplateMail addBcc(String name, String email);
 }

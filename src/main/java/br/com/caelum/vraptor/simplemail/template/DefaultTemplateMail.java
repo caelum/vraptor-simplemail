@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
@@ -23,6 +24,8 @@ public class DefaultTemplateMail implements TemplateMail {
 	private final HashMap<String, DataSource> toEmbed = new HashMap<String, DataSource>();
 	private final HashMap<String, DataSource> toAttach = new HashMap<String, DataSource>();
 
+	private final HashMap<String, String> bccs = new HashMap<String, String>();
+	
 	private final Template template;
 	private final String templateName;
 	private final Object[] nameParameters;
@@ -72,8 +75,14 @@ public class DefaultTemplateMail implements TemplateMail {
 		}
 
 		HtmlEmail email = new HtmlEmail();
+
+		
 		email.setCharset("utf-8");
 		try {
+			Set<Entry<String, String>> bccEntries = bccs.entrySet();
+			for (Entry<String, String> entry : bccEntries) {
+				email.addBcc(entry.getKey(), entry.getValue());
+			}
 			addEmbeddables(email);
 			addAttachments(email);
 			email.addTo(toMail, name);
@@ -129,5 +138,14 @@ public class DefaultTemplateMail implements TemplateMail {
 		toAttach.put(name, new URLDataSource(url));
 		return this;
 	}
+
+	
+	@Override
+	public TemplateMail addBcc(String name, String email) {
+		bccs.put(email, name);
+		return this;
+	}
+
+
 
 }

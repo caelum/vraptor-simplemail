@@ -50,4 +50,9 @@ public class MockTemplateMail implements TemplateMail {
 		return this;
 	}
 
+	@Override
+	public TemplateMail addBcc(String name, String email) {
+		return this;
+	}
+
 }

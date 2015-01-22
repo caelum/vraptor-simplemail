@@ -1,11 +1,17 @@
 package br.com.caelum.vraptor.simplemail.template;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
+import java.util.List;
 
+import org.apache.commons.mail.HtmlEmail;
+import org.hamcrest.Matchers;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -51,6 +57,19 @@ public class DefaultTemplateMailTest {
 		DefaultTemplateMail templateMail = new DefaultTemplateMail(templateName, template, null, bundle, null, null);
 		
 		templateMail.prepareEmail("leo", "leo@leo.com");
+	}
+	
+	@Test
+	public void should_add_bcc_to_email() throws IOException, TemplateException {
+		when(bundle.getMessage(templateName, new Object[]{null, null})).thenReturn("real template title");
+		
+		DefaultTemplateMail templateMail = new DefaultTemplateMail(templateName, template, null, bundle, null, null);
+		templateMail.addBcc("sheldon", "sheldon@sheldon.com");
+		
+		HtmlEmail email = templateMail.prepareEmail("leo", "leo@leo.com");
+		
+		List addresses = email.getBccAddresses();
+		assertThat(addresses.get(0).toString(), equalTo("sheldon <sheldon@sheldon.com>"));
 	}
 
 }
