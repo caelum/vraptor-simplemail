@@ -180,6 +180,7 @@ configurações do seu servidor de envio de e-mail:
 	vraptor.simplemail.main.server = localhost
 	vraptor.simplemail.main.port = 25
 	vraptor.simplemail.main.tls = false
+	vraptor.simplemail.main.ssl = false
 	vraptor.simplemail.main.from = no-reply@myapp.com
 
 Caso seja conveniente, configure ainda no arquivo de propriedades de cada ambiente a propriedade replyTo
