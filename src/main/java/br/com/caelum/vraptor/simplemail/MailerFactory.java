@@ -35,9 +35,6 @@ public class MailerFactory  {
 	}
 
 	private Mailer grabInstance() {
-		if (env.getName().equals("development")) {
-			return new MockMailer();
-		}
 		try {
 			return instantiateWithEnv();
 		} catch (Exception e) {
