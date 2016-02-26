@@ -25,6 +25,7 @@ public class DefaultMailer implements Mailer {
 	private static final String SERVER = "vraptor.simplemail.main.server";
 	private static final String PORT = "vraptor.simplemail.main.port";
 	private static final String TLS = "vraptor.simplemail.main.tls";
+	private static final String SSL = "vraptor.simplemail.main.ssl";
 	private static final String USERNAME = "vraptor.simplemail.main.username";
 	private static final String PASSWORD = "vraptor.simplemail.main.password";
 	private static final String REPLY_TO = "vraptor.simplemail.main.replyTo";
@@ -41,7 +42,9 @@ public class DefaultMailer implements Mailer {
 		email.setSmtpPort(Integer.parseInt(env.get(PORT)));
 		boolean tls = env.supports(TLS);
 		email.setTLS(tls);
-		if (tls) {
+		boolean ssl = env.supports(SSL);
+		email.setSSL(ssl);
+		if (tls || ssl) {
 			email.setAuthenticator(new DefaultAuthenticator(env.get(USERNAME),
 					env.get(PASSWORD)));
 		}
@@ -65,7 +68,8 @@ public class DefaultMailer implements Mailer {
 				email.getToAddresses(),
 				email.getHostName(),
 				email.getSmtpPort(),
-				email.isTLS()));
+				email.isTLS(),
+				email.isSSL()));
 		email.send();
 	}
 

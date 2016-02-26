@@ -19,7 +19,7 @@ public interface AsyncMailer {
 
 	/**
 	 * Sends an email asynchronously using the main mailer configuration and the
-	 * given {@link ExecutorService}. If server, port, tls or authenticator have
+	 * given {@link ExecutorService}. If server, port, tls, ssl or authenticator have
 	 * been set, they will not be overriden.
 	 *
 	 * @param email

@@ -10,6 +10,7 @@ import org.apache.commons.mail.EmailException;
  * vraptor.simplemail.main.server = smtp.gmail.com
  * vraptor.simplemail.main.port = 587
  * vraptor.simplemail.main.tls = true
+ * vraptor.simplemail.main.ssl = false
  * vraptor.simplemail.main.username = your_username
  * vraptor.simplemail.main.password = your_password
  *
@@ -22,7 +23,7 @@ public interface Mailer {
 	public static String DEFAULT_TO_PROPERTIES = "vraptor.simplemail.default_to";
 
 	/**
-	 * Sends an email using the main mailer configuration. If server, port, tls or authenticator
+	 * Sends an email using the main mailer configuration. If server, port, tls, ssl or authenticator
 	 * have been set, they will not be overriden.
 	 *
 	 * @param email
