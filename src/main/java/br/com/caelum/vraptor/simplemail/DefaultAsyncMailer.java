@@ -12,6 +12,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.inject.spi.Producer;
 import javax.inject.Inject;
 
 import org.apache.commons.mail.Email;
@@ -24,7 +25,7 @@ import br.com.caelum.vraptor.environment.Environment;
 /**
  * A simple implementation of an asynchronous mailer. It relies upon an instance
  * of {@link ExecutorService} to distribute tasks among threads. This
- * {@link ExecutorService} must be provided by a {@link ComponentFactory}.
+ * {@link ExecutorService} must be provided by a CDI {@link Producer}.
  *
  * @author luiz
  * @author victorkendy

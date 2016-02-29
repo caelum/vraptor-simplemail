@@ -75,7 +75,7 @@ public interface TemplateMail {
 	 *
 	 * @param name
 	 *            bcc name
-	 * @param toMail
+	 * @param email
 	 *            bcc e-mail
 	 * @return The same TemplateMail object
 	 */
